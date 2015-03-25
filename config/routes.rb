@@ -6,7 +6,7 @@ Myfitlist::Application.routes.draw do
   post '/sign_in', to: 'sessions#create'
   get '/sign_out', to: 'sessions#destroy'
 
-  resources :plannings, only: [:new, :create, :show, :update] do
+  resources :plans, only: [:new, :create, :show, :update] do
     resources :items, only: [:new, :create, :update, :destroy]
   end
 

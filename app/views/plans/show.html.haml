@@ -1,7 +1,7 @@
-= render 'plannings/planning', planning: @planning
+= render 'plans/planning', plan: @plan
 .add-item-button
-  = link_to "增加项目", new_planning_item_path(@planning), class: "btn btn-success"
-- if @planning.items.count > 0
+  = link_to "增加项目", new_plan_item_path(@plan), class: "btn btn-success"
+- if @plan.items.count > 0
   .well.well-sm
     %table.table.table-condensed
       %thead
@@ -14,8 +14,8 @@
           %th 保存
           %th 删除
       %tbody
-        - @planning.unfinished_items.each do |item|
-          = form_tag planning_item_path(@planning, item), method: :patch do
+        - @plan.unfinished_items.each do |item|
+          = form_tag plan_item_path(@plan, item), method: :patch do
             %tr
               %td
                 = check_box_tag "item[finished]"
@@ -31,9 +31,9 @@
                 = button_tag id: "item_#{item.id}" do
                   %i.glyphicon.glyphicon-record
               %td
-                = link_to planning_item_path(@planning, item), method: :delete do
+                = link_to plan_item_path(@plan, item), method: :delete do
                   %i.glyphicon.glyphicon-remove
-        - @planning.finished_items.each do |item|
+        - @plan.finished_items.each do |item|
           %%tr
             %td
               = check_box_tag "item[finished]", item.finished, item.finished, disabled: true

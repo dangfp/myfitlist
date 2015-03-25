@@ -11,15 +11,15 @@ class User < ActiveRecord::Base
   validates_presence_of :full_name
   validates_length_of :full_name, in: 3..20
 
-  has_many :plannings
+  has_many :plans
 
-  def today_planning
-    @today_planning = plannings.where(
+  def today_plan
+    @today_plan = plans.where(
         created_at: Date.current.beginning_of_day..Date.current.end_of_day)
-    @today_planning.first if @today_planning.count == 1
+    @today_plan.first if @today_plan.count == 1
   end
 
-  def has_today_planning?
-    !!today_planning
+  def has_today_plan?
+    !!today_plan
   end
 end

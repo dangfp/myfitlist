@@ -1,7 +1,7 @@
 .page-header
   %h2= Date.current
   .well
-    = bootstrap_form_for planning, layout: :inline do |f|
+    = bootstrap_form_for plan, layout: :inline do |f|
       = f.text_field :weight, label: "体重:"
       %span (公斤)
       = f.submit "保存", class: "btn btn-success"

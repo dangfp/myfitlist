@@ -1,15 +1,15 @@
 require "spec_helper"
 
-feature "User interacts with planning" do
+feature "User interacts with plan" do
   given(:janne) { Fabricate(:user) }
 
-  context "user has not created today planning" do
-    scenario "user creates today planning and records result" do
+  context "user has not created today plan" do
+    scenario "user creates today plan and records result" do
       sign_in(janne)
       expect_weight_is_empty
       expect_link_not_to_be_seen('增加项目')
 
-      create_planning_with_weight(80)
+      create_plan_with_weight(80)
       expect_link_to_be_seen('增加项目')
       expect_content_not_to_be_seen('项目名称')
 
@@ -17,21 +17,25 @@ feature "User interacts with planning" do
       expect_new_item_to_be_seen
 
       item = Item.find_by(name: '慢跑')
+
+      update_item_with_invalid_duration(item)
+      expect_error_message_be_seen
+
       update_item_be_finished(item)
       expect_checkbox_of_finished_item_be_checked_and_disabled
     end
   end
   
-  context "user has created today planning" do
-    given!(:today_planning) { Fabricate(:planning, user: janne, weight: 100) }
-    given!(:item) { Fabricate(:item, planning: today_planning, name: "平板支撑", duration: 20, result: 20, unit: "分钟") }
+  context "user has created today plan" do
+    given!(:today_plan) { Fabricate(:plan, user: janne, weight: 100) }
+    given!(:item) { Fabricate(:item, plan: today_plan, name: "平板支撑", duration: 20, result: 20, unit: "分钟") }
 
-    scenario "user edits planning and records result" do
+    scenario "user edits plan and records result" do
       sign_in(janne)
       expect_weight_is(100)
       expect_item_info('item_duration', 20)
 
-      update_weight(today_planning, 99)
+      update_weight(today_plan, 99)
       expect_weight_is(99)
 
       update_item_be_finished(item)
@@ -51,8 +55,8 @@ feature "User interacts with planning" do
     expect(page).to have_link(link_text)
   end
 
-  def create_planning_with_weight(weight)
-    fill_in :planning_weight, with: weight
+  def create_plan_with_weight(weight)
+    fill_in :plan_weight, with: weight
     click_button '保存'
   end
 
@@ -74,6 +78,15 @@ feature "User interacts with planning" do
     expect(find_by_id('item_finished').value).to eq("1")
   end
 
+  def update_item_with_invalid_duration(item)
+    fill_in :item_duration, with: 0
+    click_button "item_#{item.id}"
+  end
+
+  def expect_error_message_be_seen
+    expect(find_by_id('flash_danger').text).not_to be_nil
+  end
+
   def update_item_be_finished(item)
     check('item_finished')
     click_button "item_#{item.id}"
@@ -88,10 +101,10 @@ feature "User interacts with planning" do
     expect(find_field(info_id).value).to eq("#{info_value}")
   end
 
-  def update_weight(planning, weight)
-    fill_in :planning_weight, with: weight
+  def update_weight(plan, weight)
+    fill_in :plan_weight, with: weight
     click_button '保存'
-    planning.reload
+    plan.reload
   end
 
 

@@ -10,7 +10,7 @@ feature "User signs in" do
   scenario "with valid email and password" do
     janne = Fabricate(:user)
     sign_in(janne)
-    expect_right_information_to_be_seen_in_the_planning_page(janne)
+    expect_right_information_to_be_seen_in_the_plan_page(janne)
   end
 
   def sign_in_with_invalid_information
@@ -24,7 +24,7 @@ feature "User signs in" do
     expect(page).not_to have_link("退出", sign_out_path)
   end
 
-  def expect_right_information_to_be_seen_in_the_planning_page(a_user)
+  def expect_right_information_to_be_seen_in_the_plan_page(a_user)
     expect(page).to have_content(a_user.full_name)
     expect(page).to have_link("退出", sign_out_path)
     expect(page).to have_content("体重")

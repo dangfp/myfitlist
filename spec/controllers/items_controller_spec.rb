@@ -1,25 +1,25 @@
 require 'spec_helper'
 
 describe ItemsController do
-  let(:planning) { Fabricate(:planning) }
+  let(:plan) { Fabricate(:plan) }
 
   describe "GET #new" do
     context "for the unauthenticated user" do
       it_behaves_like "require_signed_in" do
-        let(:action) { get :new, planning_id: planning.id }
+        let(:action) { get :new, plan_id: plan.id }
       end
     end
 
     context "for the authenticated user" do
       before { sign_in }
 
-      it "assigns the requested planning to @planning" do
-        get :new, planning_id: planning.id
-        expect(assigns(:planning)).to eq(planning)
+      it "assigns the requested plan to @plan" do
+        get :new, plan_id: plan.id
+        expect(assigns(:plan)).to eq(plan)
       end
 
       it "renders the :new template" do
-        get :new, planning_id: planning.id
+        get :new, plan_id: plan.id
         expect(response).to render_template(:new)
       end
     end
@@ -30,7 +30,7 @@ describe ItemsController do
 
     context "for the unauthenticated user" do
       it_behaves_like "require_signed_in" do
-        let(:action) { post :create, planning_id: planning.id, item: valid_item }
+        let(:action) { post :create, plan_id: plan.id, item: valid_item }
       end
     end
 
@@ -40,18 +40,18 @@ describe ItemsController do
       context "with valid attributes" do
         it "saves the new item in the database" do
           expect{
-           post :create, planning_id: planning.id, item: valid_item
+           post :create, plan_id: plan.id, item: valid_item
             }.to change(Item, :count).by(1)
         end
 
-        it "creates a item associated the planning" do
-          post :create, planning_id: planning.id, item: valid_item
-          expect(Item.first.planning).to eq(planning)
+        it "creates a item associated the plan" do
+          post :create, plan_id: plan.id, item: valid_item
+          expect(Item.first.plan).to eq(plan)
         end
 
-        it "redirects to the planning show page" do
-          post :create, planning_id: planning.id, item: valid_item
-          expect(response).to redirect_to(planning_path(planning))
+        it "redirects to the plan show page" do
+          post :create, plan_id: plan.id, item: valid_item
+          expect(response).to redirect_to(plan_path(plan))
         end
       end
 
@@ -60,17 +60,17 @@ describe ItemsController do
 
         it "doesn't save the new item in the database" do
           expect{
-           post :create, planning_id: planning.id, item: invalid_item
+           post :create, plan_id: plan.id, item: invalid_item
             }.not_to change(Item, :count)
         end
 
-        it "assigns the requested planning to @planning" do
-          post :create, planning_id: planning.id, item: invalid_item
-          expect(assigns(:planning)).to eq(planning)
+        it "assigns the requested plan to @plan" do
+          post :create, plan_id: plan.id, item: invalid_item
+          expect(assigns(:plan)).to eq(plan)
         end
 
         it "re-renders the :new template" do
-          post :create, planning_id: planning.id, item: invalid_item
+          post :create, plan_id: plan.id, item: invalid_item
           expect(response).to render_template(:new)
         end
       end
@@ -78,12 +78,12 @@ describe ItemsController do
   end
 
   describe "PATCH #update" do
-    let(:item) { Fabricate(:item, planning_id: planning.id) }
+    let(:item) { Fabricate(:item, plan_id: plan.id) }
     before { @item_attr = Fabricate.attributes_for(:item, name: "窄距俯卧撑", duration: 20, result: 100, unit: "个")}
 
     context "for the unauthenticated user" do
       it_behaves_like "require_signed_in" do
-        let(:action) { patch :update, planning_id: planning.id, id: item.id, item: @item_attr }
+        let(:action) { patch :update, plan_id: plan.id, id: item.id, item: @item_attr }
       end
     end
 
@@ -92,7 +92,7 @@ describe ItemsController do
 
       context "with valid attributes" do
         it "updates attributes of the item in the database" do
-          patch :update, planning_id: planning.id, id: item.id, item: @item_attr
+          patch :update, plan_id: plan.id, id: item.id, item: @item_attr
           item.reload
           expect(item.name).to eq("窄距俯卧撑")
           expect(item.duration).to eq(20)
@@ -100,9 +100,9 @@ describe ItemsController do
           expect(item.unit).to eq("个")
         end
 
-        it "redirects to the planning show page" do
-          patch :update, planning_id: planning.id, id: item.id, item: @item_attr
-          expect(response).to redirect_to(planning_path(planning.id))
+        it "redirects to the plan show page" do
+          patch :update, plan_id: plan.id, id: item.id, item: @item_attr
+          expect(response).to redirect_to(plan_path(plan.id))
         end
       end
 
@@ -110,18 +110,18 @@ describe ItemsController do
         before { @item_attr.update(name: nil) }
 
         it "doesn't update attributes of the item in the database" do
-          patch :update, planning_id: planning.id, id: item.id, item: @item_attr
+          patch :update, plan_id: plan.id, id: item.id, item: @item_attr
           item.reload
           expect(item.name).not_to eq(nil)
         end
 
         it "sets the error messages" do
-          patch :update, planning_id: planning.id, id: item.id, item: @item_attr
+          patch :update, plan_id: plan.id, id: item.id, item: @item_attr
           expect(flash[:danger]).not_to be_nil
         end
 
-        it "re-renders the planning show page" do
-          patch :update, planning_id: planning.id, id: item.id, item: @item_attr
+        it "re-renders the plan show page" do
+          patch :update, plan_id: plan.id, id: item.id, item: @item_attr
           expect(response).to render_template :show
         end
       end
@@ -129,11 +129,11 @@ describe ItemsController do
   end
 
   describe "DELETE #destroy" do
-    let!(:item) { Fabricate(:item, planning_id: planning.id) }
+    let!(:item) { Fabricate(:item, plan_id: plan.id) }
 
     context "for the unauthenticated user" do
       it_behaves_like "require_signed_in" do
-        let(:action) { delete :destroy, planning_id: planning.id, id: item.id }
+        let(:action) { delete :destroy, plan_id: plan.id, id: item.id }
       end
     end
 
@@ -141,27 +141,27 @@ describe ItemsController do
       before { sign_in }
       it "deletes the item" do
         expect{
-         delete :destroy, planning_id: planning.id, id: item.id
+         delete :destroy, plan_id: plan.id, id: item.id
           }.to change(Item, :count).by(-1)
       end
 
-      it "redirects to the planning show page" do
-        delete :destroy, planning_id: planning.id, id: item.id
-        expect(response).to redirect_to(planning_path(planning))
+      it "redirects to the plan show page" do
+        delete :destroy, plan_id: plan.id, id: item.id
+        expect(response).to redirect_to(plan_path(plan))
       end
 
       it "does't delete the item that has be finished" do
-        item = Fabricate(:item, planning_id: planning.id, finished: true)
+        item = Fabricate(:item, plan_id: plan.id, finished: true)
         expect{
-         delete :destroy, planning_id: planning.id, id: item.id
+         delete :destroy, plan_id: plan.id, id: item.id
           }.not_to change(Item, :count)
       end
 
-      it "does't delete the item that does not belong to the current planning" do
-        other_planning = Fabricate(:planning)
-        other_item = Fabricate(:item, planning_id: other_planning.id)
+      it "does't delete the item that does not belong to the current plan" do
+        other_plan = Fabricate(:plan)
+        other_item = Fabricate(:item, plan_id: other_plan.id)
         expect{
-         delete :destroy, planning_id: planning.id, id: other_item.id
+         delete :destroy, plan_id: plan.id, id: other_item.id
           }.not_to change(Item, :count)
       end
     end

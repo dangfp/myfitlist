@@ -13,5 +13,5 @@ describe Item do
   it { should validate_presence_of(:unit) }
   it { should validate_length_of(:unit).is_at_least(1).is_at_most(6) }
   
-  it { should belong_to(:planning) }
+  it { should belong_to(:plan) }
 end

@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   def new
     if signed_in?
-      show_user_today_planning(current_user)
+      show_user_today_plan(current_user)
     else
       render :new
     end
@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
 
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      show_user_today_planning(user)
+      show_user_today_plan(user)
     else
       flash[:danger] = "Email或者密码不匹配，请重新输入"
       render :new

@@ -12,11 +12,11 @@ describe PagesController do
     context "for the authenticated user" do
       before { sign_in }
 
-      it_behaves_like "show_new_planning" do
+      it_behaves_like "show_new_plan" do
         let(:action) { get :front }
       end
 
-      it_behaves_like "show_user_today_planning" do
+      it_behaves_like "show_user_today_plan" do
         let(:action) { get :front }
       end
     end
