@@ -14,7 +14,7 @@ feature "User signs in" do
   end
 
   def sign_in_with_invalid_information
-    fill_in :email, with: "janne@twitter.com"
+    fill_in :email,    with: "janne@twitter.com"
     fill_in :password, with: "123456"
     click_button '登录'
   end

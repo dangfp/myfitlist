@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def show_user_today_planning(user)
-    if user.today_planning
+    if user.has_today_planning?
       redirect_to planning_path(user.today_planning)
     else
       redirect_to new_planning_path

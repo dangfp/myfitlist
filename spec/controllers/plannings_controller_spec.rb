@@ -11,14 +11,30 @@ describe PlanningsController do
     context "for the authenticated user" do
       before { sign_in }
 
-      it "assigns a new Planning to @planning" do
-        get :new
-        expect(assigns(:planning)).to be_a_new(Planning)
-      end
+      context "the user hasn't today planning" do
+        it "assigns a new Planning to @planning" do
+          get :new
+          expect(assigns(:planning)).to be_a_new(Planning)
+        end
 
-      it "renders the :new template" do
-        get :new
-        expect(response).to render_template :new
+        it "renders the :new template" do
+          get :new
+          expect(response).to render_template :new
+        end
+      end
+      
+      context "the user has today planning" do
+        let!(:today_planning) { Fabricate(:planning, user: current_user) }
+
+        it "displays the error message" do
+          get :new
+          expect(flash[:danger]).not_to be_nil
+        end
+
+        it "redirects to the planning show page" do
+          get :new
+          expect(response).to redirect_to(planning_path(today_planning))
+        end
       end
     end
   end

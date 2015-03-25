@@ -3,7 +3,12 @@ class PlanningsController < ApplicationController
   before_action :set_planning, only: [:show, :update]
 
   def new
-    @planning = Planning.new
+    if current_user.has_today_planning?
+      flash[:danger] = "您已经创建了今日的健身规划。"
+      redirect_to planning_path(current_user.today_planning)
+    else
+      @planning = Planning.new
+    end
   end
 
   def create
@@ -19,7 +24,6 @@ class PlanningsController < ApplicationController
   end
 
   def show
-    
   end
 
   def update

@@ -16,16 +16,27 @@ describe User do
 
   it { should have_many(:plannings) }
 
-  describe "#today_planning" do
-    let(:user) { Fabricate(:user) }
+  let(:user) { Fabricate(:user) }
 
-    it "returns the planning of today when the user has created the planning today" do
+  describe "#today_planning" do
+    it "returns the planning of today when the user has the today planning" do
       planning = Fabricate(:planning, user_id: user.id)
       expect(user.today_planning).to eq(planning)
     end
 
-    it "returns nil when the user doesn't create the planning today" do
+    it "returns nil when the user has't the today planning" do
       expect(user.today_planning).to be_nil
+    end
+  end
+
+  describe "#has_today_planning?" do
+    it "returns true when the user has the today planning" do
+      planning = Fabricate(:planning, user_id: user.id)
+      expect(user.has_today_planning?).to eq(true)
+    end
+
+    it "returns false when the user has't the today planning" do
+      expect(user.has_today_planning?).to eq(false)
     end
   end
 end

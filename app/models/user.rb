@@ -14,8 +14,12 @@ class User < ActiveRecord::Base
   has_many :plannings
 
   def today_planning
-    today_planning = plannings.where(
+    @today_planning = plannings.where(
         created_at: Date.current.beginning_of_day..Date.current.end_of_day)
-    return today_planning.first if today_planning.count == 1
+    @today_planning.first if @today_planning.count == 1
+  end
+
+  def has_today_planning?
+    !!today_planning
   end
 end
