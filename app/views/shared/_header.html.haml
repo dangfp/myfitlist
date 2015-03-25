@@ -8,17 +8,17 @@
         %span.icon-bar
       .navbar-brand
         = link_to 'MyFitList', root_path
-  -if signed_in?
-    .collapse.navbar-collapse
-      %ul.nav.navbar-nav
-        %li
-          = link_to '新建规划', new_plan_path
-      %ul.nav.navbar-nav.navbar-right
-        %li.dropdown
-          = link_to '#', class: 'dropdown-toggle', role: 'button', 'data-toggle' => 'dropdown' do
-            %i.glyphicon.glyphicon-user
-            = current_user.full_name
-            %span.caret
-          %ul.dropdown-menu(role="menu" aria-labelledby="dlabel")
-            %li
-              = link_to '退出', sign_out_path
+    -if signed_in?
+      .collapse.navbar-collapse
+        %ul.nav.navbar-nav
+          %li
+            = link_to '新建规划', new_plan_path
+        %ul.nav.navbar-nav.navbar-right
+          %li.dropdown
+            = link_to '#', class: 'dropdown-toggle', role: 'button', 'data-toggle' => 'dropdown' do
+              %i.glyphicon.glyphicon-user
+              = current_user.full_name
+              %span.caret
+            %ul.dropdown-menu(role="menu" aria-labelledby="dlabel")
+              %li
+                = link_to '退出', sign_out_path
